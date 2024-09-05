@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<input type="text" id="theme"></input>
+<input type="text" id="textUser"></input>
+
+<button type="submit" id="subm1">Submit</button><br />
+<div class="error_msg"></div>
+<label class="userValues"></label><br />
+<label class="userValues2"></label>
+<script>
+  /*
+Вы разрабатываете систему отзывов для вашего веб-сайта. Пользователи могут оставлять отзывы, но чтобы исключить слишком короткие 
+или слишком длинные сообщения, вы решаете установить некоторые ограничения.
+Создайте HTML-структуру с текстовым полем для ввода отзыва, кнопкой для отправки и контейнером, где будут отображаться отзывы.
+Напишите функцию, которая будет добавлять отзыв в контейнер с отзывами. Однако если длина введенного отзыва менее 5 или более 500 символов, 
+функция должна генерировать исключение.
+При добавлении отзыва, он должен отображаться на странице под предыдущими отзывами, а не заменять их
+  */
+  const initialData = [
+    {
+      product: "Apple iPhone 13",
+      reviews: [
+        {
+          id: "1",
+          text: "Hi, there! It's my first commit.",
+        },
+        {
+          id: "2",
+          text: "This is a review.",
+        },
+      ],
+    },
+    {
+      product: "Samsung Galaxy Z Fold 3",
+      reviews: [
+        {
+          id: "3",
+          text: "This is another review.",
+        },
+      ],
+    },
+    {
+      product: "Sony PlayStation 5",
+      reviews: [
+        {
+          id: "4",
+          text: "Люблю играть на PS5, графика на высоте.",
+        },
+      ],
+    },
+  ];
+
+
+  const pUsers2 = document.querySelector('.userValues2');
+  const divError = document.querySelector('.error_msg');
+  function printValues(initialData) {
+    for (var k in initialData) {
+      if (initialData[k] instanceof Object) {
+        printValues(initialData[k]);
+      } else {
+        pUsers2.innerHTML += initialData[k] + "<br />";
+      };
+    }
+  };
+ // printValues(initialData);
+
+  const pUsers = document.querySelector('.userValues');
+ // pUsers.textContent = JSON.stringify(initialData, null, 2);
+
+  const butS = document.getElementById("subm1");
+
+  butS.addEventListener("click", () => {
+    const inp = document.getElementById("theme");
+    const inp2 = document.getElementById("textUser");
+    try {
+      if (inp2.value.trim().length < 5 || inp2.value.trim().length > 500) {
+        throw new Error('Несоответствующая длина текста')
+      }
+      const newProd = inp.value;
+      const newText = inp2.value;
+      const newProdObj = {
+        product: newProd,
+        reviews: [
+          {
+            id: initialData.length + 2,
+            text: newText,
+          },
+        ],
+      };
+      initialData.push(newProdObj);
+
+      pUsers2.innerHTML = ' ';
+      printValues(initialData);
+    }
+    catch (error) {
+      divError.textContent = error.message;
+    }
+  });
+
+</script>
+</body>
+
+</html>
